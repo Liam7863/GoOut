@@ -1,0 +1,255 @@
+.event-page-container {
+  background-color: var(--bg-dark);
+  min-height: 100vh;
+  padding-bottom: 50px;
+}
+
+/* Екран завантаження */
+.loading-screen {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--neon-blue);
+  font-family: monospace;
+  font-size: 1.5rem;
+  letter-spacing: 3px;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.5; }
+  50% { opacity: 1; text-shadow: 0 0 10px var(--neon-blue); }
+  100% { opacity: 0.5; }
+}
+
+/* Кнопка "Назад" */
+.back-btn {
+  position: fixed;
+  top: 20px;
+  left: 30px;
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid #444;
+  color: #fff;
+  padding: 10px 20px;
+  font-family: inherit;
+  font-weight: bold;
+  letter-spacing: 1px;
+  cursor: pointer;
+  z-index: 100;
+  backdrop-filter: blur(5px);
+  transition: all 0.3s;
+}
+
+.back-btn:hover {
+  border-color: var(--neon-blue);
+  color: var(--neon-blue);
+}
+
+/* Великий постер */
+.event-hero {
+  height: 60vh; /* Займає 60% висоти екрану */
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  display: flex;
+  align-items: flex-end; /* Текст притискається до низу */
+}
+
+.hero-overlay {
+  width: 100%;
+  padding: 60px 40px 40px 40px;
+  background: linear-gradient(to top, var(--bg-dark) 0%, rgba(18, 18, 18, 0.8) 50%, transparent 100%);
+}
+
+.event-badge {
+  background: transparent;
+  color: var(--neon-blue);
+  border: 1px solid var(--neon-blue);
+  padding: 6px 12px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  display: inline-block;
+  margin-bottom: 15px;
+  box-shadow: 0 0 10px rgba(0, 243, 255, 0.1);
+}
+
+.hero-title {
+  font-size: 3.5rem;
+  margin: 0;
+  color: var(--text-heading);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 2px 2px 10px rgba(0,0,0,0.8);
+}
+
+/* Сітка контенту (2 колонки) */
+.event-content-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr; /* Ліва частина вдвічі більша за праву */
+  gap: 50px;
+  padding: 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Ліва колонка */
+.event-text {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #ccc;
+  white-space: pre-line; /* Щоб зберігалися абзаци з бд */
+}
+
+/* Права колонка (Панель купівлі) */
+.event-buy-panel {
+  background-color: var(--bg-panel);
+  border: 1px solid #333;
+  padding: 30px;
+  height: fit-content;
+  position: sticky; /* Панель буде "їхати" за екраном при скролі вниз */
+  top: 100px; 
+}
+
+.panel-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  font-size: 1.1rem;
+}
+
+.panel-label {
+  color: #777;
+}
+
+.panel-value {
+  color: #fff;
+  font-weight: bold;
+  text-align: right;
+}
+
+.panel-divider {
+  height: 1px;
+  background-color: #333;
+  margin: 20px 0;
+}
+
+.price-row {
+  align-items: center;
+}
+
+.panel-price {
+  font-size: 2rem;
+  color: var(--neon-blue);
+  font-weight: bold;
+  text-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
+}
+
+.buy-btn {
+  margin-top: 30px;
+  padding: 20px;
+  font-size: 1.2rem;
+}
+
+.like-btn {
+  width: 100%;
+  margin-top: 15px;
+  background: transparent;
+  border: 1px solid #555;
+  color: #888;
+  padding: 15px;
+  font-family: inherit;
+  font-weight: bold;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.like-btn:hover {
+  border-color: #fff;
+  color: #fff;
+  background: #222;
+}
+
+/* Коли квиток куплено */
+.buy-btn.btn-success {
+  background: var(--neon-blue);
+  color: #000;
+  border-color: var(--neon-blue);
+  box-shadow: 0 0 20px rgba(0, 243, 255, 0.4);
+  cursor: default;
+}
+
+/* Коли подію додано в обране (Лайк) */
+.like-btn.liked {
+  border-color: var(--neon-blue);
+  color: var(--neon-blue);
+  background: rgba(0, 243, 255, 0.05);
+  cursor: default;
+}
+
+/* Спливаюче повідомлення (Toast Notification) в стилі кіберпанк */
+.toast-notification {
+  position: fixed;
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(10, 10, 10, 0.95);
+  border: 1px solid var(--neon-blue);
+  color: var(--neon-blue);
+  padding: 15px 30px;
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  z-index: 1000;
+  box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
+  animation: slideDown 0.4s cubic-bezier(0.25, 1, 0.5, 1), fadeOut 0.5s 2.5s forwards;
+}
+
+@keyframes slideDown {
+  from { top: -50px; opacity: 0; }
+  to { top: 30px; opacity: 1; }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; visibility: hidden; }
+}
+
+/* Контроли количества билетов */
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.qty-btn {
+  background: transparent;
+  border: 1px solid var(--neon-blue);
+  color: var(--neon-blue);
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1.2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s;
+}
+
+.qty-btn:hover {
+  background: var(--neon-blue);
+  color: #000;
+  box-shadow: 0 0 10px rgba(0, 243, 255, 0.4);
+}
+
+.qty-value {
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: bold;
+  width: 20px;
+  text-align: center;
+}

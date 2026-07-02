@@ -1,0 +1,18 @@
+.env
+
+# Frontend (React/Vite)
+node_modules/
+dist/
+.vite/
+
+# Backend (Python)
+__pycache__/
+venv/
+env/
+
+# База данних
+pgdata/
+*.sqlite3
+
+# Парсер
+scraper/

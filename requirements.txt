@@ -1,0 +1,14 @@
+fastapi
+uvicorn
+sqlalchemy
+psycopg2-binary
+passlib[bcrypt]
+bcrypt==3.2.2
+python-jose
+pydantic[email]
+pandas
+numpy
+requests
+python-dotenv
+python-multipart
+numpy==1.26.4

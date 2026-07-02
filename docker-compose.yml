@@ -1,0 +1,34 @@
+
+services:
+  # 1. Контейнер бази даних
+  diploma_postgres:
+    image: postgres:15
+    container_name: diploma_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # 2. Контейнер вашого FastAPI сервера
+  api:
+    build: .
+    container_name: diploma_api
+    ports:
+      - "8000:8000"
+    depends_on:
+      - diploma_postgres
+    environment:
+      - DB_HOST=diploma_postgres  # Ось тут ми вказуємо ім'я сервісу замість localhost
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    env_file:
+      - .env
+
+volumes:
+  postgres_data:

@@ -1,0 +1,234 @@
+.profile-container {
+  background-color: var(--bg-dark);
+  min-height: 100vh;
+  padding: 80px 40px 40px 40px;
+  color: var(--text-main);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Досьє користувача (Хедер профілю) */
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  background-color: var(--bg-panel);
+  border: 1px solid #333;
+  padding: 40px;
+  margin-bottom: 40px;
+  position: relative;
+}
+
+.user-avatar {
+  width: 100px;
+  height: 100px;
+  background: var(--neon-blue);
+  color: #000;
+  font-size: 3rem;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  box-shadow: 0 0 20px rgba(0, 243, 255, 0.3);
+}
+
+.user-info h1 {
+  margin: 0 0 10px 0;
+  font-size: 2.5rem;
+  color: var(--text-heading);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.user-email {
+  color: #888;
+  font-size: 1.1rem;
+  margin: 0 0 15px 0;
+}
+
+.user-status {
+  background: rgba(0, 243, 255, 0.1);
+  color: var(--neon-blue);
+  border: 1px solid var(--neon-blue);
+  padding: 4px 10px;
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+
+.profile-logout {
+  position: absolute;
+  right: 40px;
+  top: 40px;
+}
+
+/* Таби (Вкладки) */
+.profile-tabs {
+  display: flex;
+  gap: 20px;
+  border-bottom: 1px solid #333;
+  margin-bottom: 30px;
+}
+
+.tab-btn {
+  background: transparent;
+  color: #666;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 15px 20px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  font-family: inherit;
+  cursor: pointer;
+  letter-spacing: 1px;
+  transition: all 0.3s;
+}
+
+.tab-btn:hover {
+  color: #fff;
+}
+
+.tab-btn.active {
+  color: var(--neon-blue);
+  border-bottom: 2px solid var(--neon-blue);
+  text-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
+}
+
+/* Контент і пусті стани */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  background-color: var(--bg-panel);
+  border: 1px dashed #444;
+  color: #888;
+}
+
+/* Сітка квитків */
+.tickets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 20px;
+}
+
+/* Дизайн Квитка (Кіберпанк перепустка) */
+.ticket-card {
+  background: linear-gradient(135deg, #111, #1a1a1a);
+  border: 1px solid #333;
+  border-left: 4px solid var(--neon-blue);
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch; /* Щоб штрихкод тягнувся на всю висоту */
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.ticket-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 243, 255, 0.1);
+  border-color: #555;
+}
+
+.ticket-info {
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.ticket-info h3 {
+  margin: 0 0 10px 0;
+  font-size: 1.2rem;
+  color: #fff;
+}
+
+.ticket-date, .ticket-id {
+  margin: 5px 0;
+  color: #888;
+  font-size: 0.9rem;
+}
+
+/* Імітація штрихкоду збоку квитка */
+.ticket-barcode {
+  background: #0a0a0a;
+  border-left: 2px dashed #333;
+  padding: 20px 15px;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  color: var(--neon-blue);
+  font-family: monospace;
+  font-size: 1.5rem;
+  letter-spacing: -2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Сітка лайків */
+.likes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.liked-event-card {
+  background-color: var(--bg-panel);
+  border: 1px solid #333;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.liked-event-card:hover {
+  border-color: var(--neon-blue);
+  background-color: #1a1a1a;
+}
+
+.neon-text {
+  color: var(--neon-blue);
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+/* Досьє користувача (Хедер профілю) */
+.profile-header {
+  display: flex;
+  justify-content: space-between; /* Розносимо інфо і графік по краях */
+  align-items: center;
+  background-color: var(--bg-panel);
+  border: 1px solid #333;
+  padding: 40px;
+  margin-bottom: 40px;
+  position: relative;
+  min-height: 250px;
+}
+
+.profile-info-block {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  flex: 1;
+}
+
+/* Радарна діаграма */
+.radar-container {
+  width: 300px;
+  height: 250px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-left: 1px solid #333;
+  padding-left: 40px;
+}
+
+.radar-title {
+  color: var(--neon-blue);
+  font-size: 10px;
+  letter-spacing: 2px;
+  margin: 0 0 10px 0;
+  text-align: center;
+}
+
+/* Специфічний фікс для SVG графіка */
+.recharts-wrapper {
+  outline: none;
+}

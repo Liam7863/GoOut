@@ -1,0 +1,99 @@
+:root {
+  --bg-dark: #121212;
+  --bg-panel: #1e1e1e;
+  --text-main: #b3b3b3;
+  --text-heading: #ffffff;
+  --neon-blue: #00f3ff;
+  --border-radius: 0px; 
+}
+
+body {
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 0;
+  
+  /* ЗАБОРОНА ВИДІЛЕННЯ ТЕКСТУ */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Але дозволяємо виділяти текст і клікати всередині полів вводу */
+input, textarea {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+
+/* ... далі ваш існуючий код (.industrial-input, .neon-btn і т.д.) ... */
+
+h1, h2, h3 {
+  color: var(--text-heading);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Індустріальні інпути */
+.industrial-input {
+  width: 100%;
+  background: transparent;
+  border: 1px solid #444;
+  color: var(--text-heading);
+  padding: 12px;
+  border-radius: var(--border-radius);
+  outline: none;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.industrial-input:focus {
+  border-color: var(--neon-blue);
+  box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
+}
+
+/* Неонова кнопка */
+.neon-btn {
+  width: 100%;
+  background: transparent;
+  color: var(--neon-blue);
+  border: 1px solid var(--neon-blue);
+  padding: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  cursor: pointer;
+  border-radius: var(--border-radius);
+  transition: all 0.3s ease;
+  box-shadow: 0 0 5px rgba(0, 243, 255, 0.2), inset 0 0 5px rgba(0, 243, 255, 0.1);
+}
+
+.neon-btn:hover {
+  background: var(--neon-blue);
+  color: var(--bg-dark);
+  box-shadow: 0 0 20px rgba(0, 243, 255, 0.6);
+}
+
+.logo-container {
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  font-family: 'Arial Black', sans-serif; /* Або інший масивний шрифт */
+}
+
+.logo-go {
+  color: var(--text-heading);
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+.logo-out {
+  color: transparent;
+  -webkit-text-stroke: 1px var(--neon-blue); /* Контурний текст */
+  text-shadow: 0 0 10px rgba(0, 243, 255, 0.4); /* Неонове світіння */
+  font-weight: 300;
+  margin-left: 2px;
+}
