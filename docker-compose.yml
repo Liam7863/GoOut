@@ -1,6 +1,6 @@
 
 services:
-  # 1. Контейнер бази даних
+  # 1. Database service
   diploma_postgres:
     image: postgres:15
     container_name: diploma_postgres
@@ -14,7 +14,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
-  # 2. Контейнер вашого FastAPI сервера
+  # 2. API service
   api:
     build: .
     container_name: diploma_api
@@ -23,7 +23,7 @@ services:
     depends_on:
       - diploma_postgres
     environment:
-      - DB_HOST=diploma_postgres  # Ось тут ми вказуємо ім'я сервісу замість localhost
+      - DB_HOST=diploma_postgres  
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${POSTGRES_DB}
