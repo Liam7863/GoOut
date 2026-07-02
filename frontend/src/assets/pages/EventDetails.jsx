@@ -11,10 +11,10 @@ export default function EventDetails() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  // Стейты интерфейса
+  // UI states
   const [isLiked, setIsLiked] = useState(false);
   const [isBought, setIsBought] = useState(false);
-  const [quantity, setQuantity] = useState(1); // НОВЕ: Кількість квитків
+  const [quantity, setQuantity] = useState(1); 
   const [notification, setNotification] = useState('');
 
   useEffect(() => {
@@ -29,7 +29,7 @@ export default function EventDetails() {
     })
     .then(res => {
       setEvent(res.data);
-      // Якщо твій бекенд навчиться віддавати статус лайка, він підхопиться тут:
+      // If the backend returns the like status, it will be caught here:
       if (res.data.is_liked) setIsLiked(true); 
       setLoading(false);
     })
@@ -39,7 +39,7 @@ export default function EventDetails() {
     });
   }, [id, navigate]);
 
-  // === ВІДРЕФАКТОРЕНА ЛОГІКА ЛАЙКІВ (TOGGLE) ===
+  // === REFACTORED LIKE LOGIC (TOGGLE) ===
   const handleLike = async () => {
     try {
       const token = localStorage.getItem('token');
@@ -47,7 +47,7 @@ export default function EventDetails() {
         headers: { Authorization: `Bearer ${token}` }
       });
       
-      // Якщо бекенд повернув повідомлення про видалення або ми просто знаємо, що лайк вже стояв
+      // If the backend returned a deletion message or we know the like was already set
       if (isLiked) {
         setIsLiked(false);
         showNotification("Подію видалено з обраного.");
@@ -61,11 +61,11 @@ export default function EventDetails() {
     }
   };
 
-  // === ЛОГІКА КУПІВЛІ (З КІЛЬКІСТЮ) ===
+  // === PURCHASE LOGIC (WITH QUANTITY) ===
   const handleBuy = async () => {
     try {
       const token = localStorage.getItem('token');
-      // Передаємо кількість квитків через Query Parameters
+      // Passing ticket quantity via Query Parameters
       await axios.post(`http://127.0.0.1:8000/api/events/${id}/buy?quantity=${quantity}`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -92,7 +92,7 @@ export default function EventDetails() {
 
   const img = event.image_url || "https://images.unsplash.com/photo-1574391884720-bbc3740c59d1?w=1200";
   const type = event.categories && event.categories.length > 0 ? event.categories[0] : 'Подія';
-  // Динамічний підрахунок ціни
+  // Dynamic price calculation
   const basePrice = event.price || 0;
   const totalPrice = basePrice > 0 ? `${basePrice * quantity} ₴` : 'Free';
 
@@ -123,7 +123,7 @@ export default function EventDetails() {
             <span className="panel-value">{basePrice > 0 ? `${basePrice} ₴` : 'Безкоштовно'}</span>
           </div>
 
-          {/* НОВИЙ БЛОК: Вибір кількості */}
+          {/* NEW BLOCK: Quantity selection */}
           <div className="panel-row" style={{ alignItems: 'center', marginTop: '15px' }}>
             <span className="panel-label">Кількість:</span>
             <div className="quantity-controls">

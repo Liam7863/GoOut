@@ -14,14 +14,12 @@ body {
   margin: 0;
   padding: 0;
   
-  /* ЗАБОРОНА ВИДІЛЕННЯ ТЕКСТУ */
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
 }
 
-/* Але дозволяємо виділяти текст і клікати всередині полів вводу */
 input, textarea {
   -webkit-user-select: text;
   -moz-user-select: text;
@@ -29,15 +27,12 @@ input, textarea {
   user-select: text;
 }
 
-/* ... далі ваш існуючий код (.industrial-input, .neon-btn і т.д.) ... */
-
 h1, h2, h3 {
   color: var(--text-heading);
   text-transform: uppercase;
   letter-spacing: 1px;
 }
 
-/* Індустріальні інпути */
 .industrial-input {
   width: 100%;
   background: transparent;
@@ -55,7 +50,6 @@ h1, h2, h3 {
   box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
 }
 
-/* Неонова кнопка */
 .neon-btn {
   width: 100%;
   background: transparent;
@@ -81,7 +75,7 @@ h1, h2, h3 {
   font-size: 2rem;
   display: flex;
   align-items: center;
-  font-family: 'Arial Black', sans-serif; /* Або інший масивний шрифт */
+  font-family: 'Arial Black', sans-serif; 
 }
 
 .logo-go {
@@ -92,8 +86,8 @@ h1, h2, h3 {
 
 .logo-out {
   color: transparent;
-  -webkit-text-stroke: 1px var(--neon-blue); /* Контурний текст */
-  text-shadow: 0 0 10px rgba(0, 243, 255, 0.4); /* Неонове світіння */
+  -webkit-text-stroke: 1px var(--neon-blue); 
+  text-shadow: 0 0 10px rgba(0, 243, 255, 0.4); 
   font-weight: 300;
   margin-left: 2px;
 }

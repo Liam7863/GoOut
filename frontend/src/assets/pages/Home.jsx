@@ -6,62 +6,60 @@ import './Home.css';
 export default function Home() {
   const navigate = useNavigate();
 
-  // === СТЕЙТЫ (СОСТОЯНИЯ) ===
+  // === STATE MANAGEMENT ===
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTag, setActiveTag] = useState('');
   const [viewMode, setViewMode] = useState('events'); 
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [sortBy, setSortBy] = useState('date');
 
-  // === ДАННЫЕ ИЗ БАЗЫ (Теперь пустые массивы по умолчанию) ===
+  // === DATABASE DATA (Initialized as empty arrays by default) ===
   const [categories, setCategories] = useState([]);
   const [events, setEvents] = useState([]);
   const [recommendations, setRecommendations] = useState([]);
 
-  // === ЗАГРУЗКА ДАННЫХ ИЗ FASTAPI ===
+  // === DATA FETCHING (FASTAPI) ===
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) {
-      navigate('/login'); // Если нет токена, выкидываем на логин
+      navigate('/login'); // Redirect to login if token is missing
       return;
     }
 
     const config = {
       headers: { Authorization: `Bearer ${token}` }
     };
-
-    // 1. Завантажуємо категорії
+    
+    // 1. Fetch categories
     axios.get('http://127.0.0.1:8000/api/categories')
       .then(res => setCategories(res.data))
       .catch(err => console.error("Помилка категорій:", err));
 
-    // 2. Завантажуємо всі події
+    // 2. Fetch all events
     axios.get('http://127.0.0.1:8000/api/events')
       .then(res => setEvents(res.data))
       .catch(err => console.error("Помилка подій:", err));
 
-    // 3. Завантажуємо персональні рекомендації (працює ML-алгоритм!)
+    // 3. Fetch personal recommendations (works with ML algorithm!)
     axios.get('http://127.0.0.1:8000/api/recommendations?limit=5', config)
       .then(res => setRecommendations(res.data))
       .catch(err => console.error("Помилка рекомендацій:", err));
   }, [navigate]);
 
-  // Логіка виходу
+  // === LOGOUT FUNCTION ===
   const handleLogout = () => {
     localStorage.removeItem('token');
     navigate('/login');
   };
 
-  // === ЛОГІКА ФІЛЬТРАЦІЇ ТА СОРТУВАННЯ ===
+  // === FILTERING AND SORTING LOGIC ===
   const processedEvents = events
     .filter(ev => {
       const matchesSearch = ev.title.toLowerCase().includes(searchQuery.toLowerCase());
-      // Перевіряємо, чи є обраний тег у масиві категорій події
       const matchesTag = activeTag ? (ev.categories && ev.categories.includes(activeTag)) : true;
       return matchesSearch && matchesTag;
     })
-    .sort((a, b) => {
-      // Використовуємо fallback (0), якщо ціни раптом немає в базі
+    .sort((a, b) => { 
       const priceA = a.price || 0;
       const priceB = b.price || 0;
       
@@ -73,7 +71,7 @@ export default function Home() {
 
   return (
     <div className="home-container">
-      {/* ================= БЛОК 1: ХЕДЕР ================= */}
+      {/* Header */}
       <header className="industrial-header">
         <div className="logo-container">
           <span className="logo-go">GO</span><span className="logo-out">OUT</span>
@@ -86,15 +84,13 @@ export default function Home() {
         </div>
       </header>
 
-      {/* ================= БЛОК 2: РЕКОМЕНДАЦІЇ ================= */}
+      {/* Recommendations */}
       <section className="recommendations-section">
         <h2 className="section-title">Сигнатура збігів (Recommend)</h2>
         <div className="recommendations-scroll">
           {recommendations.length > 0 ? (
             recommendations.map((rec, index) => {
-              // Берем першу категорію для бейджа
               const type = rec.categories && rec.categories.length > 0 ? rec.categories[0] : 'Event';
-              // Ставимо заглушку, якщо в базі поки немає картинки
               const img = rec.image_url || "https://images.unsplash.com/photo-1574391884720-bbc3740c59d1?w=800";
               
               return (
@@ -120,7 +116,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ================= БЛОК 3: ПАНЕЛЬ ФІЛЬТРІВ ТА ПОШУК ================= */}
+      {/* Filter Panel */}
       <div className="filter-panel">
         <div className="filter-tags">
           {categories.slice(0, 5).map(tag => (
@@ -143,7 +139,7 @@ export default function Home() {
           </span>
         </div>
 
-        {/* СОРТУВАННЯ */}
+        {/* Sort */}
         <div className="sort-wrapper">
           <select 
             className="industrial-select" 
@@ -156,7 +152,7 @@ export default function Home() {
           </select>
         </div>
 
-        {/* Анімоване поле пошуку */}
+        {/* Search */}
         <div className={`search-wrapper ${isSearchOpen ? 'open' : ''}`}>
           <svg className="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <circle cx="11" cy="11" r="8"></circle>
@@ -181,7 +177,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* ================= БЛОК 4: ДИНАМІЧНА СІТКА ================= */}
+      {/* Events Grid */}
       <main className="events-grid">
         {viewMode === 'categories' ? (
           categories.map(cat => (
@@ -222,7 +218,7 @@ export default function Home() {
           })
         )}
         
-        {/* Повідомлення, якщо подій немає */}
+        {/* No Events Message */}
         {viewMode === 'events' && processedEvents.length === 0 && (
           <div style={{ gridColumn: '1 / -1', textAlign: 'center', color: '#555', padding: '40px' }}>
             Подій не знайдено.

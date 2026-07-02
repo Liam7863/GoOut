@@ -1,25 +1,25 @@
 import os
 import sys
 
-# --- Сторонние библиотеки (FastAPI, SQLAlchemy, JWT) ---
+# Third-party libraries (FastAPI, SQLAlchemy, JWT)
 from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from jose import jwt, JWTError
 
-# --- Настройка путей ---
+# Path configuration
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-# --- Локальные импорты проекта ---
+# Local project imports
 from app.api.database import SessionLocal, engine
 from app.api import models, schemas, security
 from app.api.recommendations import get_recommendations
 
-# Инициализация приложения
+# Application initialization
 app = FastAPI(title="Kyiv Events API")
 
-# --- НАСТРОЙКА CORS ---
+# CORS CONFIGURATION
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"], 
@@ -28,7 +28,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Функция для безопасного подключения к базе данных
+# Dependency for safe database connection
 def get_db():
     db = SessionLocal()
     try:
@@ -37,7 +37,7 @@ def get_db():
         db.close()
 
 
-# --- БАЗОВЫЕ МАРШРУТЫ ---
+# BASE ROUTES
 
 @app.get("/")
 def read_root():
@@ -48,12 +48,12 @@ def get_events(db: Session = Depends(get_db)):
     events = db.query(models.Event).all()
     return events
 
-# НОВЫЙ МАРШРУТ ДЛЯ ХОЛОДНОГО СТАРТА: Получение списка категорий
+# NEW ROUTE FOR COLD START: Retrieve the list of categories
 @app.get("/api/categories", response_model=list[str])
 def get_all_categories(db: Session = Depends(get_db)):
     """
-    Возвращает список уникальных категорий из всех событий.
-    Используется на фронтенде для выбора интересов при регистрации.
+    Returns a list of unique categories from all events.
+    Used on the frontend for selecting interests during registration.
     """
     events = db.query(models.Event.categories).filter(models.Event.categories.isnot(None)).all()
     
@@ -66,7 +66,7 @@ def get_all_categories(db: Session = Depends(get_db)):
     return sorted(list(unique_categories))
 
 
-# --- АВТОРИЗАЦИЯ И РЕГИСТРАЦИЯ ---
+# AUTHENTICATION AND REGISTRATION
 
 @app.post("/api/register", response_model=schemas.UserResponse)
 def register_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
@@ -76,7 +76,7 @@ def register_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     
     hashed_password = security.get_password_hash(user.password)
     
-    # СОХРАНЯЕМ КАТЕГОРИИ ИЗ ФОРМЫ РЕГИСТРАЦИИ
+    # SAVE CATEGORIES FROM REGISTRATION FORM
     new_user = models.User(
         email=user.email,
         name=user.name,
@@ -104,7 +104,7 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
     return {"access_token": access_token, "token_type": "bearer"}
 
 
-# --- ЗАЩИТА МАРШРУТОВ (Токены) ---
+# ROUTE PROTECTION (Tokens)
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/login")
 
@@ -128,7 +128,7 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
     return user
 
 
-# --- ВЗАИМОДЕЙСТВИЕ И РЕКОМЕНДАЦИИ ---
+# INTERACTION AND RECOMMENDATIONS
 
 @app.post("/api/events/{event_id}/like", status_code=status.HTTP_201_CREATED)
 def like_event(event_id: int, current_user: models.User = Depends(get_current_user), db: Session = Depends(get_db)):
@@ -167,17 +167,17 @@ def buy_ticket(event_id: int, quantity: int = 1, current_user: models.User = Dep
 @app.get("/api/recommendations")
 def get_personal_recommendations(limit: int = 5, current_user: models.User = Depends(get_current_user), db: Session = Depends(get_db)):
     """
-    Повертає персоналізований список подій на основі алгоритму косинусної подібності (або Жаккара для новачків).
+    Returns a personalized list of events based on the cosine similarity algorithm (or Jaccard index for new users).
     """
     recommended_events = get_recommendations(db, user_id=current_user.id, limit=limit)
     return recommended_events
 
 @app.get("/api/events/{event_id}")
 def get_single_event(event_id: int, db: Session = Depends(get_db)):
-    # Шукаємо подію в базі за її ID (використовуємо models.Event)
+    # Search for an event in the database by its ID (using models.Event)
     event = db.query(models.Event).filter(models.Event.id == event_id).first()
     
-    # Якщо такої події немає, повертаємо красиву помилку
+    # If the event does not exist, return a formatted error
     if not event:
         raise HTTPException(status_code=404, detail="Подію не знайдено")
         
@@ -197,12 +197,12 @@ def get_user_profile(current_user: models.User = Depends(get_current_user)):
 
 @app.get("/api/users/me/tickets")
 def get_user_tickets(current_user: models.User = Depends(get_current_user), db: Session = Depends(get_db)):
-    # Ищем все билеты этого юзера
+    # Find all tickets for this user
     tickets = db.query(models.Ticket).filter(models.Ticket.user_id == current_user.id).all()
     
     result = []
     for t in tickets:
-        # Для каждого билета подтягиваем название и дату события
+        # Fetch the title and date of the event for each ticket
         event = db.query(models.Event).filter(models.Event.id == t.event_id).first()
         result.append({
             "id": t.id,
@@ -216,7 +216,7 @@ def get_user_tickets(current_user: models.User = Depends(get_current_user), db: 
 
 @app.get("/api/users/me/likes")
 def get_user_likes(current_user: models.User = Depends(get_current_user), db: Session = Depends(get_db)):
-    # Ищем все лайки этого юзера
+    # Find all likes for this user
     likes = db.query(models.Like).filter(models.Like.user_id == current_user.id).all()
     
     result = []

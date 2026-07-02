@@ -40,7 +40,6 @@ export default function Login() {
         
         {error && <p style={{ color: '#ff003c', margin: '0 0 10px 0' }}>{error}</p>}
         
-        {/* ВАЖНО: Вернули onSubmit={handleSubmit} */}
         <form className="auth-form" onSubmit={handleSubmit}>
           <input 
             type="email" 

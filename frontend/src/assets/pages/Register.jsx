@@ -12,7 +12,6 @@ export default function Register() {
   const [selectedCategories, setSelectedCategories] = useState([]);   
   const [error, setError] = useState('');
 
-  // Возвращаем динамическую загрузку категорий!
   useEffect(() => {
     axios.get('http://127.0.0.1:8000/api/categories')
       .then(response => {
@@ -72,7 +71,6 @@ export default function Register() {
           <div className="chips-container" style={{ marginTop: '15px' }}>
             <p style={{ color: 'white', marginBottom: '10px', fontSize: '12px' }}>СИГНАТУРА ІНТЕРЕСІВ (Для рекомендацій):</p>
             <div className="chips-grid">
-              {/* Рендерим реальные категории из базы */}
               {availableCategories.map(cat => (
                 <div 
                   key={cat}

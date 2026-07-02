@@ -1,34 +1,27 @@
-/* --- ГОЛОВНИЙ КОНТЕЙНЕР --- */
 .split-layout {
   display: flex;
   min-height: 100vh;
   width: 100%;
-  justify-content: center; /* Ідеальне центрування по горизонталі на ВЕСЬ екран */
-  align-items: center;     /* Ідеальне центрування по вертикалі на ВЕСЬ екран */
+  justify-content: center; 
+  align-items: center;     
   background-color: var(--bg-dark);
 }
 
-/* --- КАРТКА ФОРМИ --- */
 .auth-form-side {
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 450px; /* Фіксована ширина форми */
+  max-width: 450px; 
   padding: 40px;
-  background-color: var(--bg-panel); /* Робимо форму трохи світлішою за фон екрана */
+  background-color: var(--bg-panel); 
   border: 1px solid #333;
-  /* Додаємо кіберпанк-тінь для виділення блоку */
   box-shadow: 0 0 30px rgba(0, 0, 0, 0.8), 0 0 10px rgba(0, 243, 255, 0.05);
 }
 
-/* --- ХОВАЄМО ПРАВУ ЧАСТИНУ --- */
-/* Оскільки ми відмовилися від спліт-екрана, просто вимикаємо контейнер для картинки */
 .auth-image-side {
   display: none;
 }
 
-
-/* --- СТИЛІ ЕЛЕМЕНТІВ ФОРМИ --- */
 .auth-form {
   display: flex;
   flex-direction: column;
@@ -43,7 +36,7 @@
 
 .auth-links {
   margin-top: 25px;
-  text-align: center; /* Відцентровуємо посилання під кнопкою */
+  text-align: center; 
 }
 
 .auth-links a {
@@ -56,7 +49,6 @@
   text-shadow: 0 0 8px var(--neon-blue);
 }
 
-/* --- НЕОНОВІ ЧИПСИ (ЖАККАРД) --- */
 .chips-grid {
   display: flex;
   flex-wrap: wrap;

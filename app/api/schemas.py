@@ -5,7 +5,6 @@ class UserCreate(BaseModel):
     email: EmailStr
     password: str
     name: str
-    # Добавляем поле для холодного старта. По умолчанию пустой список.
     preferred_categories: Optional[List[str]] = []
 
 class UserResponse(BaseModel):

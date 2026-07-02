@@ -4,7 +4,7 @@ from app.api import models
 
 def get_user_vector(db: Session, user_id: int):
     """
-    Аналізує історію користувача та створює зважений словник його інтересів.
+    Analyzes the user's history and creates a weighted dictionary of their interests.
     """
     likes = db.query(models.Like).filter(models.Like.user_id == user_id).all()
     tickets = db.query(models.Ticket).filter(models.Ticket.user_id == user_id).all()
@@ -27,20 +27,20 @@ def get_user_vector(db: Session, user_id: int):
 
 def get_recommendations(db: Session, user_id: int, limit: int = 5):
     """
-    Гібридний алгоритм: 
-    - Коефіцієнт Жаккара для Холодного старту (нових користувачів).
-    - Косинусна подібність для активних користувачів.
+    Generates event recommendations using a hybrid algorithm:
+    - Jaccard index for cold start (new users).
+    - Cosine similarity for active users.
     """
     user_profile = get_user_vector(db, user_id)
     
-    # Отримуємо об'єкт користувача, щоб дістати його стартові інтереси
+    # Fetch the user object to access their initial interests
     user = db.query(models.User).filter(models.User.id == user_id).first()
 
-    # Збираємо ID подій, з якими юзер ВЖЕ взаємодіяв
+    # Collect IDs of events the user has already interacted with
     interacted_ids = [l.event_id for l in db.query(models.Like).filter(models.Like.user_id == user_id).all()] + \
                      [t.event_id for t in db.query(models.Ticket).filter(models.Ticket.user_id == user_id).all()]
 
-    # Дістаємо всі події, які юзер ще не бачив
+    # Retrieve all events the user hasn't seen yet
     query = db.query(models.Event)
     if interacted_ids:
         query = query.filter(~models.Event.id.in_(interacted_ids))
@@ -48,11 +48,9 @@ def get_recommendations(db: Session, user_id: int, limit: int = 5):
 
     recommendations = []
 
-    # ==========================================
-    # СЦЕНАРІЙ 1: ХОЛОДНИЙ СТАРТ (Метод Жаккара)
-    # ==========================================
+    # SCENARIO 1: COLD START (Jaccard Index)
     if not user_profile:
-        # Якщо юзер навіть при реєстрації не вибрав категорії — повертаємо просто останні події
+        # Fallback: if the user selected no categories during registration, return the latest events
         if not user or not user.preferred_categories:
             return db.query(models.Event).limit(limit).all()
         
@@ -64,16 +62,14 @@ def get_recommendations(db: Session, user_id: int, limit: int = 5):
             
             event_cats = set(event.categories)
             
-            # Математика Жаккара: |A ∩ B| / |A ∪ B|
+            # Jaccard formula: |A ∩ B| / |A ∪ B|
             intersection = len(user_cats.intersection(event_cats))
             union = len(user_cats.union(event_cats))
             
             sim = intersection / union if union > 0 else 0.0
             recommendations.append({"event": event, "similarity": sim})
 
-    # ==========================================
-    # СЦЕНАРІЙ 2: АКТИВНИЙ ЮЗЕР (Косинусна подібність)
-    # ==========================================
+    # SCENARIO 2: ACTIVE USER (Cosine Similarity)
     else:
         vocab = list(user_profile.keys())
         user_vector = np.array([user_profile[cat] for cat in vocab])
@@ -94,8 +90,8 @@ def get_recommendations(db: Session, user_id: int, limit: int = 5):
 
             recommendations.append({"event": event, "similarity": sim})
 
-    # Сортуємо від найбільш схожих (близьких до 1.0) до найменш схожих
+    # Sort recommendations from most similar (closest to 1.0) to least similar
     recommendations.sort(key=lambda x: x["similarity"], reverse=True)
 
-    # Повертаємо об'єкти подій для API
+    # Extract and return event objects for the API
     return [item["event"] for item in recommendations[:limit]]

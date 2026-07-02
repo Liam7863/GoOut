@@ -1,6 +1,3 @@
-/* =========================================
-   БАЗОВИЙ ЛЕЙАУТ ТА ХЕДЕР
-   ========================================= */
 .home-container {
   padding: 0;
 }
@@ -16,7 +13,7 @@
 
 .logout-btn {
   background: transparent;
-  color: #ff003c; /* Червоний неоновий акцент для виходу */
+  color: #ff003c; 
   border: 1px solid #ff003c;
   padding: 8px 16px;
   cursor: pointer;
@@ -30,10 +27,6 @@
   box-shadow: 0 0 10px rgba(255, 0, 60, 0.5);
 }
 
-
-/* =========================================
-   БЛОК 2: VIP-ЗОНА РЕКОМЕНДАЦІЙ
-   ========================================= */
 .recommendations-section {
   padding: 30px 40px;
   border-bottom: 1px solid #222;
@@ -48,15 +41,13 @@
   text-transform: uppercase;
 }
 
-/* Горизонтальная прокрутка для карточек */
 .recommendations-scroll {
   display: flex;
   gap: 20px;
   overflow-x: auto;
-  padding-bottom: 15px; /* Место для кастомного скроллбара */
+  padding-bottom: 15px; 
 }
 
-/* Специфичный скроллбар только для этой зоны */
 .recommendations-scroll::-webkit-scrollbar {
   height: 4px;
 }
@@ -69,7 +60,6 @@
   background: #222;
 }
 
-/* Карточка рекомендации (более широкая, чем обычная) */
 .recommendation-card {
   min-width: 400px;
   height: 220px;
@@ -97,7 +87,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: grayscale(40%) brightness(0.6); /* Делаем картинки атмосферно темными */
+  filter: grayscale(40%) brightness(0.6); 
   transition: transform 0.5s, filter 0.5s;
 }
 
@@ -106,7 +96,6 @@
   filter: grayscale(0%) brightness(0.9);
 }
 
-/* Бейдж процента совпадения (Match) */
 .match-badge {
   position: absolute;
   top: 15px;
@@ -117,11 +106,10 @@
   padding: 4px 8px;
   font-size: 12px;
   font-weight: bold;
-  backdrop-filter: blur(4px); /* Эффект матового стекла под неоном */
+  backdrop-filter: blur(4px); 
   z-index: 2;
 }
 
-/* Градиент снизу карточки для читаемости текста */
 .rec-overlay {
   position: absolute;
   bottom: 0;
@@ -140,10 +128,6 @@
   text-shadow: 0 2px 4px rgba(0,0,0,0.8);
 }
 
-
-/* =========================================
-   БЛОК 3: ПАНЕЛЬ ФІЛЬТРІВ, СОРТУВАННЯ ТА ПОШУК
-   ========================================= */
 .filter-panel {
   display: flex;
   justify-content: space-between;
@@ -155,7 +139,6 @@
   gap: 20px;
 }
 
-/* Старий варіант скролу фільтрів (збережено) */
 .filter-scroll {
   display: flex;
   gap: 20px;
@@ -172,7 +155,6 @@
   background: var(--neon-blue);
 }
 
-/* Теги фільтрів */
 .filter-tags {
   display: flex;
   gap: 15px;
@@ -209,14 +191,12 @@
   padding: 5px 15px;
 }
 
-/* Кастомний Select (Сортування) */
 .sort-wrapper {
   position: relative;
   display: flex;
   align-items: center;
 }
 
-/* Скрываем стандартную браузерную стрелочку и рисуем свою */
 .sort-wrapper::after {
   content: '▼';
   position: absolute;
@@ -237,14 +217,14 @@
   background: #1a1a1a;
   border: 1px solid #717171;
   color: #888;
-  padding: 10px 35px 10px 15px; /* Справа отступ больше для стрелочки */
+  padding: 10px 35px 10px 15px;
   outline: none;
   cursor: pointer;
   font-family: inherit;
   font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 1px;
-  appearance: none; /* Убирает дефолтную стрелку */
+  appearance: none; 
   -webkit-appearance: none;
   -moz-appearance: none;
   transition: all 0.3s;
@@ -262,36 +242,34 @@
   padding: 10px;
 }
 
-/* Строка пошуку (Анімація виїзду справа наліво) */
 .search-wrapper {
   position: relative;
-  height: 40px; /* Фіксована висота для стабільності */
+  height: 40px;
 }
 
 .search-icon {
   position: absolute;
-  left: 12px; /* Прив'язуємо іконку до ЛІВОГО краю поля */
+  left: 12px; 
   top: 50%;
   transform: translateY(-50%);
   width: 18px;
   height: 18px;
-  color: var(--neon-blue); /* Яскрава лупа в закритому стані */
+  color: var(--neon-blue);
   transition: color 0.3s;
-  pointer-events: none; /* Магія: клік проходить крізь лупу прямо в input! */
+  pointer-events: none; 
   z-index: 2;
 }
 
-/* Коли пошук відкритий, лупа тьмяніє */
 .search-wrapper.open .search-icon {
   color: #666; 
 }
 
 .industrial-search {
-  width: 40px; /* У закритому вигляді це просто невидима кнопка 40x40 під лупою */
+  width: 40px; 
   height: 40px;
   background: transparent;
   border: 1px solid transparent;
-  color: transparent; /* Ховаємо текст і курсор */
+  color: transparent; 
   padding: 10px; 
   outline: none;
   cursor: pointer;
@@ -299,27 +277,20 @@
   box-sizing: border-box;
 }
 
-/* Відкритий стан: поле виїжджає на 300px */
 .search-wrapper.open .industrial-search {
   width: 300px;
   background: #111;
   border: 1px solid #333;
   color: var(--text-heading);
-  padding: 10px 10px 10px 40px; /* Звільняємо місце зліва під іконку лупи */
+  padding: 10px 10px 10px 40px; 
   cursor: text; 
 }
 
-/* Неонове світіння при введенні тексту */
 .search-wrapper.open .industrial-search:focus {
   border-color: var(--neon-blue);
   box-shadow: 0 0 10px rgba(0, 243, 255, 0.1);
 }
 
-
-/* =========================================
-   БЛОК 4: ГОЛОВНА СІТКА (ПОДІЇ ТА КАТЕГОРІЇ)
-   ========================================= */
-/* Сітка подій */
 .events-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -327,20 +298,19 @@
   padding: 40px;
 }
 
-/* Картка події */
 .event-card {
   background-color: var(--bg-panel);
   border: 1px solid #333;
   display: flex;
   flex-direction: column;
-  height: 100%; /* ВАЖНО: Заставляет все карточки в ряду быть одной высоты */
+  height: 100%; 
 }
 
 .card-image-wrapper {
   position: relative;
   width: 100%;
   height: 200px;
-  overflow: hidden; /* Важливо для ефекту scale */
+  overflow: hidden; 
 }
 
 .card-image-wrapper img {
@@ -348,11 +318,11 @@
   height: 100%;
   object-fit: cover;
   transition: transform 0.5s ease;
-  filter: grayscale(30%); /* Додаємо індустріальної похмурості */
+  filter: grayscale(30%);
 }
 
 .event-card:hover .card-image-wrapper img {
-  transform: scale(1.1); /* Збільшення при наведенні */
+  transform: scale(1.1); 
   filter: grayscale(0%);
 }
 
@@ -376,7 +346,7 @@
   padding: 20px;
   display: flex;
   flex-direction: column;
-  flex: 1; /* ВАЖНО: Растягивает блок с текстом на всё свободное пространство под картинкой */
+  flex: 1; 
   gap: 15px;
 }
 
@@ -397,7 +367,6 @@
   font-size: 12px;
 }
 
-/* Картки категорій (Режим "УСІ") */
 .category-card {
   background-color: var(--bg-panel);
   border: 1px solid #333;
@@ -425,7 +394,6 @@
   letter-spacing: 2px;
 }
 
-/* Угловой декоративный элемент на карточке тега */
 .category-decor {
   position: absolute;
   bottom: -15px;

@@ -10,22 +10,22 @@ export default function Profile() {
   const [userData, setUserData] = useState(null);
   const [tickets, setTickets] = useState([]);
   const [likes, setLikes] = useState([]);
-  const [allEvents, setAllEvents] = useState([]); // НОВИЙ СТЕЙТ: для всіх подій з бази
+  const [allEvents, setAllEvents] = useState([]); // State to store all events from the database
   const [loading, setLoading] = useState(true);
   
-  // === ДИНАМИЧЕСКИЕ ДАННЫЕ ДЛЯ РАДАРА (ИЗ БАЗЫ ДАННЫХ) ===
+  // DYNAMIC DATA FOR RADAR CHART (BASED ON DATABASE ENTRIES)
   const chartData = useMemo(() => {
-    // 1. Збираємо всі унікальні категорії, які існують в усій базі подій
+    // 1. Collect all unique categories that exist across the entire event database
     const uniqueCategories = new Set();
     allEvents.forEach(ev => {
-      // Перевіряємо обидва варіанти: масив categories або рядок category
+      // Check both variations: 'categories' array or 'category' string
       if (ev.categories && ev.categories.length > 0) uniqueCategories.add(ev.categories[0]);
       else if (ev.category) uniqueCategories.add(ev.category);
     });
     
     const dbCategories = Array.from(uniqueCategories);
 
-    // Якщо події ще не завантажились, повертаємо заглушку-трикутник, щоб SVG не зламався
+    // If events haven't loaded yet, return a placeholder geometry (e.g., a triangle)
     if (dbCategories.length === 0) {
       return [
         { subject: '', value: 0.05 },
@@ -34,10 +34,10 @@ export default function Profile() {
       ];
     }
 
-    // 2. Рахуємо кількість твоїх лайків та квитків
+    // 2. Count user interactions (tickets + likes) per category
     const counts = {};
     const countInteraction = (item) => {
-      // Шукаємо подію в загальній базі по ID
+      // Find the corresponding event in the allEvents array
       const event = allEvents.find(e => e.id === item.event_id);
       if (event) {
         const cat = (event.categories && event.categories.length > 0) ? event.categories[0] : event.category;
@@ -48,28 +48,25 @@ export default function Profile() {
     tickets.forEach(countInteraction);
     likes.forEach(countInteraction);
 
-    // 3. Знаходимо максимальне значення (для розрахунку 100% заповнення)
+    // 3. Find the maximum value (for calculating 100% fill)
     const maxCount = Math.max(1, ...Object.values(counts));
 
-    // 4. Будуємо графік на основі ВСІХ категорій з бази
+    // 4. Build the chart based on ALL categories from the database
     return dbCategories.map(cat => {
       const userInteractions = counts[cat] || 0;
-      // Якщо лайків у цій категорії 0, ставимо 0.05, щоб точка просто лежала близько до центру
       const val = userInteractions === 0 ? 0.05 : (userInteractions / maxCount);
       
       return {
-        subject: cat.length > 12 ? cat.substring(0, 12) + '...' : cat, // Обрізаємо довгі назви
+        subject: cat.length > 12 ? cat.substring(0, 12) + '...' : cat,
         value: val
       };
     });
   }, [tickets, likes, allEvents]);
 
-  // === МАТЕМАТИКА ОТРИСОВКИ РАДАРА ===
-  const size = 300; // Общий размер SVG
-  const center = size / 2; // Центр (150)
-  const maxRadius = 100; // Радиус самой большой паутины
+  const size = 300; 
+  const center = size / 2; 
+  const maxRadius = 100; 
 
-  // Функция для вычисления X и Y по углу и радиусу
   const getPoint = (index, total, radius) => {
     const angle = (index / total) * Math.PI * 2 - Math.PI / 2;
     return {
@@ -78,7 +75,7 @@ export default function Profile() {
     };
   };
 
-  // 1. Рисуем многоугольник самих данных
+  // 1. Generate the polygon points for the radar chart based on the chartData
   const dataPolygon = chartData.map((d, i) => {
     const point = getPoint(i, chartData.length, maxRadius * d.value);
     return `${point.x},${point.y}`;
@@ -89,7 +86,7 @@ export default function Profile() {
     if (!token) { navigate('/login'); return; }
     const config = { headers: { Authorization: `Bearer ${token}` } };
 
-    // Робимо 4 запити одночасно (включаючи завантаження всієї бази)
+    // Fetch user data, tickets, likes, and all events in parallel
     Promise.all([
       axios.get('http://127.0.0.1:8000/api/users/me', config).catch(() => null),
       axios.get('http://127.0.0.1:8000/api/users/me/tickets', config).catch(() => ({ data: [] })),
@@ -122,7 +119,7 @@ export default function Profile() {
         ← ГОЛОВНИЙ ТЕРМІНАЛ
       </button>
 
-      {/* ДОСЬЄ КОРИСТУВАЧА З РАДАРОМ */}
+      {/* User Info */}
       <div className="profile-header">
         <div className="profile-info-block">
           <div className="user-avatar">
@@ -135,14 +132,13 @@ export default function Profile() {
           </div>
         </div>
 
-        {/* НАШ КАСТОМНЫЙ SVG РАДАР */}
+        {/* Radar Chart */}
         <div className="radar-container" style={{ width: size, height: size, position: 'relative' }}>
           <h3 className="radar-title" style={{ position: 'absolute', top: 0, width: '100%', textAlign: 'center' }}>
             СИГНАТУРА ІНТЕРЕСІВ
           </h3>
           
           <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
-            {/* Рисуем фоновую паутину (уровни 20%, 40%, 60%, 80%, 100%) */}
             {[0.2, 0.4, 0.6, 0.8, 1].map((level) => (
               <polygon 
                 key={level}
@@ -156,15 +152,12 @@ export default function Profile() {
               />
             ))}
 
-            {/* Рисуем оси от центра к краям и подписи */}
             {chartData.map((d, i) => {
               const edgePoint = getPoint(i, chartData.length, maxRadius);
-              const labelPoint = getPoint(i, chartData.length, maxRadius + 25); // Подписи чуть дальше края
+              const labelPoint = getPoint(i, chartData.length, maxRadius + 25); 
               return (
                 <g key={d.subject}>
-                  {/* Линия оси */}
                   <line x1={center} y1={center} x2={edgePoint.x} y2={edgePoint.y} stroke="#444" />
-                  {/* Текст категории */}
                   <text 
                     x={labelPoint.x} 
                     y={labelPoint.y} 
@@ -176,7 +169,6 @@ export default function Profile() {
                   >
                     {d.subject}
                   </text>
-                  {/* Значение (опционально, можно убрать) */}
                   <text 
                     x={labelPoint.x} 
                     y={labelPoint.y + 15} 
@@ -191,14 +183,12 @@ export default function Profile() {
               );
             })}
 
-            {/* Рисуем сам многоугольник данных юзера */}
             <polygon 
               points={dataPolygon} 
               fill="rgba(0, 243, 255, 0.2)" 
               stroke="var(--neon-blue)" 
               strokeWidth="2" 
             />
-            {/* Точки на углах многоугольника */}
             {chartData.map((d, i) => {
               const point = getPoint(i, chartData.length, maxRadius * d.value);
               return <circle key={`dot-${i}`} cx={point.x} cy={point.y} r="4" fill="var(--neon-blue)" />;
@@ -207,7 +197,6 @@ export default function Profile() {
         </div>
       </div>
       
-      {/* НАВІГАЦІЯ (ТАБИ) */}
       <div className="profile-tabs">
         <button 
           className={`tab-btn ${activeTab === 'tickets' ? 'active' : ''}`}
@@ -223,7 +212,7 @@ export default function Profile() {
         </button>
       </div>
 
-      {/* КОНТЕНТ ТАБІВ */}
+      {/* Tab Content */}
       <div className="tab-content">
         
         {activeTab === 'tickets' && (

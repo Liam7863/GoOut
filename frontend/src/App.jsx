@@ -6,8 +6,7 @@ import EventDetails from './assets/pages/EventDetails';
 import Profile from './assets/pages/Profile';
 import './App.css';
 
-// Компонент-Охранник (Protected Route)
-// Проверяет наличие токена. Если его нет -> редирект на регистрацию
+// Protected Route
 function ProtectedRoute({ children }) {
   const token = localStorage.getItem('token');
   if (!token) {

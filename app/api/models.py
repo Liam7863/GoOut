@@ -7,7 +7,7 @@ from datetime import datetime
 class Event(Base):
     __tablename__ = "events"
     id = Column(Integer, primary_key=True, index=True)
-    title = Column(String, nullable=False) # Теперь это будет "Izdryk. Poetry evening"
+    title = Column(String, nullable=False) 
     alias = Column(String, unique=True, index=True)
     venue = Column(String)
     date = Column(DateTime)
@@ -50,5 +50,4 @@ class Review(Base):
     text = Column(String)
     created_at = Column(DateTime, default=datetime.utcnow)
 
-# Ця команда фізично створює всі таблиці в базі даних (якщо їх ще немає)
 Base.metadata.create_all(bind=engine)
