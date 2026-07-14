@@ -17,14 +17,14 @@ export default function EventDetails() {
   const [quantity, setQuantity] = useState(1); 
   const [notification, setNotification] = useState('');
 
+  const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
+
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) {
       navigate('/login');
       return;
     }
-
-    const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
 
     axios.get(`${API_URL}/api/events/${id}`, {
       headers: { Authorization: `Bearer ${token}` }
