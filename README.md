@@ -4,7 +4,7 @@
 
 ## 🔗 Посилання на проєкт
 - **Live Demo (Frontend):** [https://go-out-seven.vercel.app]
-- **API Swagger Docs (Backend):** [https://goout-api-35ch.onrender.com]
+- **API Swagger Docs (Backend):** [https://goout-api-35ch.onrender.com/docs]
 
 ## 🛠 Технологічний стек
 **Frontend:**
@@ -28,3 +28,14 @@
 - Збереження подій у персональний список "Обране" (лайки).
 - Купівля квитків (симуляція транзакцій).
 - Динамічний радар у профілі користувача, що оновлюється в реальному часі.
+
+## 📸 Інтерфейс додатку
+
+**Головне меню та фільтрація:**
+<img width="1431" height="805" alt="головне меню+ фільтрація" src="https://github.com/user-attachments/assets/6e9a4690-707d-4108-a6c6-cf00335e61ef" />
+
+**Профіль користувача та радар інтересів:**
+<img width="1431" height="802" alt="Профіль+Сигнатура" src="https://github.com/user-attachments/assets/461c4e23-fcec-4c68-ab49-5749d2ec5f8b" />
+
+**Сторінка події:**
+<img width="1431" height="805" alt="Сторінка івенту" src="https://github.com/user-attachments/assets/924a6039-88b3-466e-8a33-894531ea189f" />
