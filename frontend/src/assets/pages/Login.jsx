@@ -12,12 +12,14 @@ export default function Login() {
     e.preventDefault();
     setError('');
 
+    const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
+
     const params = new URLSearchParams();
     params.append('username', email);
     params.append('password', password);
 
     try {
-      const response = await axios.post('http://127.0.0.1:8000/api/login', params, {
+      const response = await axios.post(`${API_URL}/api/login`, params, {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
       });
       localStorage.setItem('token', response.data.access_token);

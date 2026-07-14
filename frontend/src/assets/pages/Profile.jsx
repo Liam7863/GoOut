@@ -86,12 +86,14 @@ export default function Profile() {
     if (!token) { navigate('/login'); return; }
     const config = { headers: { Authorization: `Bearer ${token}` } };
 
+    const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
+    
     // Fetch user data, tickets, likes, and all events in parallel
     Promise.all([
-      axios.get('http://127.0.0.1:8000/api/users/me', config).catch(() => null),
-      axios.get('http://127.0.0.1:8000/api/users/me/tickets', config).catch(() => ({ data: [] })),
-      axios.get('http://127.0.0.1:8000/api/users/me/likes', config).catch(() => ({ data: [] })),
-      axios.get('http://127.0.0.1:8000/api/events', config).catch(() => ({ data: [] }))
+      axios.get(`${API_URL}/api/users/me`, config).catch(() => null),
+      axios.get(`${API_URL}/api/users/me/tickets`, config).catch(() => ({ data: [] })),
+      axios.get(`${API_URL}/api/users/me/likes`, config).catch(() => ({ data: [] })),
+      axios.get(`${API_URL}/api/events`, config).catch(() => ({ data: [] }))
     ])
     .then(([userRes, ticketsRes, likesRes, eventsRes]) => {
       setUserData(userRes?.data || { name: "Олексій", email: "user@network.local", status: "Active" });

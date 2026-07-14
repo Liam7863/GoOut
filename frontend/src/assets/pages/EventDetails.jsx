@@ -24,7 +24,9 @@ export default function EventDetails() {
       return;
     }
 
-    axios.get(`http://127.0.0.1:8000/api/events/${id}`, {
+    const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
+
+    axios.get(`${API_URL}/api/events/${id}`, {
       headers: { Authorization: `Bearer ${token}` }
     })
     .then(res => {
@@ -43,7 +45,7 @@ export default function EventDetails() {
   const handleLike = async () => {
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.post(`http://127.0.0.1:8000/api/events/${id}/like`, {}, {
+      const res = await axios.post(`${API_URL}/api/events/${id}/like`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
       
@@ -66,7 +68,7 @@ export default function EventDetails() {
     try {
       const token = localStorage.getItem('token');
       // Passing ticket quantity via Query Parameters
-      await axios.post(`http://127.0.0.1:8000/api/events/${id}/buy?quantity=${quantity}`, {}, {
+      await axios.post(`${API_URL}/api/events/${id}/buy?quantity=${quantity}`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
       

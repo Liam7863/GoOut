@@ -30,18 +30,20 @@ export default function Home() {
       headers: { Authorization: `Bearer ${token}` }
     };
     
+    const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
+    
     // 1. Fetch categories
-    axios.get('http://127.0.0.1:8000/api/categories')
+    axios.get(`${API_URL}/api/categories`)
       .then(res => setCategories(res.data))
       .catch(err => console.error("Помилка категорій:", err));
 
     // 2. Fetch all events
-    axios.get('http://127.0.0.1:8000/api/events')
+    axios.get(`${API_URL}/api/events`)
       .then(res => setEvents(res.data))
       .catch(err => console.error("Помилка подій:", err));
 
     // 3. Fetch personal recommendations (works with ML algorithm!)
-    axios.get('http://127.0.0.1:8000/api/recommendations?limit=5', config)
+    axios.get(`${API_URL}/api/recommendations?limit=5`, config)
       .then(res => setRecommendations(res.data))
       .catch(err => console.error("Помилка рекомендацій:", err));
   }, [navigate]);

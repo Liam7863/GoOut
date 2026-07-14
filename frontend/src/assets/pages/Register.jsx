@@ -12,8 +12,10 @@ export default function Register() {
   const [selectedCategories, setSelectedCategories] = useState([]);   
   const [error, setError] = useState('');
 
+  const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
+
   useEffect(() => {
-    axios.get('http://127.0.0.1:8000/api/categories')
+    axios.get(`${API_URL}/api/categories`)
       .then(response => {
         setAvailableCategories(response.data);
       })
@@ -33,7 +35,7 @@ export default function Register() {
     setError('');
 
     try {
-      await axios.post('http://127.0.0.1:8000/api/register', {
+      await axios.post(`${API_URL}/api/register`, {
         name, email, password, preferred_categories: selectedCategories
       });
       
@@ -41,7 +43,7 @@ export default function Register() {
       params.append('username', email);
       params.append('password', password);
 
-      const loginResponse = await axios.post('http://127.0.0.1:8000/api/login', params, {
+      const loginResponse = await axios.post(`${API_URL}/api/login`, params, {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
       });
       
